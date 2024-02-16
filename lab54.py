@@ -6,16 +6,45 @@ def parse_input(user_input):
 def all_contact(args, contacts):
     listall = [f"Name: {name} - Tel : {contacts[name]}" for name in contacts]
     return "\n".join(listall)
-    
+
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except IndexError:
+            return "phone: Потрібен ПІБ!"
+        except KeyError:
+            return "phone: Нема такого ПІБ!"
+    return inner
+
+@input_error    
 def phone_contact(args, contacts):
     name = args[0]
     return f"Name: {name} - Tel : {contacts[name]}"
  
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            return "change: Потрібен ПІБ та номер!"
+    return inner
+
+@input_error 
 def change_contact(args, contacts):
     name, phone = args
     contacts[name] = phone
     return "Contact change."
 
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            return "Add: Потрібен ПІБ та номер!"
+    return inner
+
+@input_error
 def add_contact(args, contacts):
     name, phone = args
     contacts[name] = phone
