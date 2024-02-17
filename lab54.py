@@ -12,43 +12,35 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except IndexError:
-            return "phone: Потрібен ПІБ!"
+            return "Потрібен ПІБ!"
         except KeyError:
-            return "phone: Нема такого ПІБ!"
+            return "Нема такого ПІБ!"
+        except ValueError:
+            return "Потрібен ПІБ та номер!"
     return inner
 
 @input_error    
 def phone_contact(args, contacts):
     name = args[0]
     return f"Name: {name} - Tel : {contacts[name]}"
- 
-def input_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except ValueError:
-            return "change: Потрібен ПІБ та номер!"
-    return inner
 
 @input_error 
 def change_contact(args, contacts):
-    name, phone = args
-    contacts[name] = phone
-    return "Contact change."
-
-def input_error(func):
-    def inner(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except ValueError:
-            return "Add: Потрібен ПІБ та номер!"
-    return inner
+    if phone_contact(args, contacts) == "Нема такого ПІБ!":
+        return "Нема такого контакту"
+    else:
+        name, phone = args
+        contacts[name] = phone
+        return "Contact change."
 
 @input_error
 def add_contact(args, contacts):
-    name, phone = args
-    contacts[name] = phone
-    return "Contact added."
+    if phone_contact(args, contacts) == "Нема такого ПІБ!":
+        name, phone = args
+        contacts[name] = phone
+        return "Контакт додано"
+    else:
+        return "Такой контакт вже Є"
 
 def main():
     contacts = {}

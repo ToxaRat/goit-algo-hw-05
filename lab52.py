@@ -3,7 +3,7 @@ import re
 
 def generator_numbers(text: str):
     # регуляр 27.45
-    pattern = r"\d+.\d+"
+    pattern = r" \d+.\d+ "
     result = re.findall(pattern, text)
     # ленивий возврат
     for num1 in result:
